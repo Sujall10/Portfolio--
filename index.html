@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bravo — Agency Template Made for Framer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+        
+        /* Custom Cursor - Desktop Only */
+        @media (min-width: 769px) {
+            body {
+                cursor: none;
+            }
+            
+            .cursor {
+                width: 16px;
+                height: 16px;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 99999;
+                mix-blend-mode: difference;
+                transition: width 0.2s, height 0.2s;
+            }
+            
+            .cursor-follower {
+                width: 40px;
+                height: 40px;
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 99998;
+                mix-blend-mode: difference;
+            }
+            
+            .cursor.hover {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cursor, .cursor-follower {
+                display: none !important;
+            }
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        nav.scrolled {
+            padding: 16px 60px;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .nav-logo {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            white-space: nowrap;
+        }
+        
+        .nav-center {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+        
+        .nav-center li {
+            position: relative;
+        }
+        
+        .nav-center a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            white-space: nowrap;
+            position: relative;
+        }
+        
+        .nav-center a:hover {
+            color: #fff;
+        }
+        
+        .nav-cta {
+            padding: 12px 24px;
+            background: #fff;
+            color: #000;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .mobile-menu-btn span {
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            transition: all 0.3s;
+        }
+        
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            padding: 100px 40px;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        
+        .mobile-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .mobile-menu a:hover {
+            color: rgba(255, 255, 255, 0.6);
+            padding-left: 10px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 140px 60px 100px;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            font-size: 13px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .hero-title {
+            font-size: clamp(40px, 8vw, 160px);
+            font-weight: 300;
+            line-height: 0.95;
+            max-width: 1600px;
+            margin-bottom: 40px;
+            letter-spacing: -0.04em;
+            animation: fadeInUp 0.8s ease 0.1s backwards;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(18px, 3vw, 20px);
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 48px;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            animation: fadeInUp 0.8s ease 0.3s backwards;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-primary, .btn-secondary {
+            padding: 20px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #fff;
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+        
+        .hero-image {
+            width: clamp(180px, 40vw, 280px);
+            height: clamp(180px, 40vw, 280px);
+            border-radius: 50%;
+            margin-top: 80px;
+            animation: float 8s ease-in-out infinite, fadeIn 1s ease 0.4s backwards;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(8deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Marquee */
+        .marquee-wrapper {
+            padding: 20px 0;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .marquee-track {
+            display: flex;
+            gap: 32px;
+            width: max-content;
+        }
+        
+        .marquee-track.animate {
+            animation: marquee 20s linear infinite;
+        }
+        
+        .marquee-track.reverse {
+            animation: marqueeReverse 20s linear infinite;
+        }
+        
+        .marquee-item {
+            width: clamp(280px, 35vw, 500px);
+            height: clamp(140px, 17.5vw, 250px);
+            border-radius: 24px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .marquee-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .marquee-item:hover img {
+            transform: scale(1.08);
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-100% / 8)); }
+        }
+        
+        @keyframes marqueeReverse {
+            0% { transform: translateX(calc(-100% / 8)); }
+            100% { transform: translateX(0); }
+        }
+        
+        /* Sections */
+        .services, .what-we-do, .process, .benefits, .pricing, .testimonials, .faq, .more-work {
+            padding: clamp(80px, 12vw, 180px) clamp(40px, 5vw, 80px);
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .section-label {
+            font-size: 14px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: clamp(36px, 6vw, 80px);
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: clamp(60px, 8vw, 120px);
+            max-width: 1200px;
+            letter-spacing: -0.03em;
+        }
+        
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: clamp(40px, 5vw, 80px) clamp(30px, 4vw, 60px);
+        }
+        
+        .service-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+        
+        .service-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-icon {
+            width: clamp(70px, 12vw, 100px);
+            height: clamp(70px, 12vw, 100px);
+            margin: 0 auto 24px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .service-item:hover .service-icon {
+            transform: scale(1.15) rotate(8deg);
+        }
+        
+        .service-name {
+            font-size: clamp(22px, 3.5vw, 32px);
+            font-weight: 500;
+            text-transform: lowercase;
+            letter-spacing: -0.02em;
+        }
+        
+        /* Logos */
+        .logos {
+            padding: 80px 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .logo-track {
+            display: flex;
+            gap: 80px;
+            width: max-content;
+            animation: logoScroll 10s linear infinite;
+        }
+        
+        .logo-item {
+            height: clamp(35px, 6vw, 60px);
+            width: auto;
+            opacity: 0.3;
+            filter: brightness(0) invert(1);
+            transition: opacity 0.4s;
+            flex-shrink: 0;
+        }
+        
+        .logo-item:hover {
+            opacity: 0.7;
+        }
+        
+        @keyframes logoScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-100% / 12)); }
+        }
+        
+        /* What We Do */
+        .services-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(60px, 8vw, 100px) clamp(40px, 5vw, 80px);
+            margin-top: 80px;
+        }
+        
+        .showcase-item {
+            position: relative;
+        }
+        
+        .showcase-number {
+            position: absolute;
+            top: -30px;
+            left: -10px;
+            font-size: clamp(100px, 18vw, 220px);
+            font-weight: 900;
+            opacity: 0.02;
+            line-height: 1;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .showcase-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .showcase-title {
+            font-size: clamp(32px, 6vw, 64px);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .showcase-subtitle {
+            font-size: clamp(16px, 2.5vw, 18px);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Process */
+        .process-steps {
+            margin-top: 80px;
+        }
+        
+        .process-step {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: clamp(30px, 5vw, 80px);
+            padding: clamp(40px, 6vw, 80px) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.4s;
+        }
+        
+        .process-step:hover {
+            background: rgba(255, 255, 255, 0.005);
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        .step-number-col {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .step-tag {
+            font-size: 11px;
+            font-weight: 800;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1.5px;
+        }
+        
+        .step-number {
+            font-size: 13px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .step-content h3 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-transform: lowercase;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+        
+        .step-content p {
+            font-size: clamp(16px, 2.5vw, 18px);
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.7;
+            max-width: 700px;
+        }
+        
+        /* Projects Section - Stacking Cards */
+        .projects {
+            padding: clamp(80px, 15vw, 180px) 0;
+            position: relative;
+            background: #000;
+        }
+        
+        .project-header {
+            padding: 0 clamp(20px, 5vw, 80px) clamp(80px, 12vw, 150px);
+        }
+        
+        .project-header h2 {
+            font-size: clamp(60px, 15vw, 160px);
+            font-weight: 900;
+            opacity: 0.1;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        
+        .projects-stack-container {
+            position: relative;
+            padding: 0 clamp(20px, 5vw, 80px);
+        }
+        
+        .project-card {
+            position: sticky;
+            top: 100px;
+            height: 75vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            will-change: transform;
+        }
+        
+        .project-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .project-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            border-radius: clamp(20px, 3vw, 40px);
+            overflow: hidden;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
+            z-index: 1;
+            transition: opacity 0.6s ease;
+        }
+        
+        .project-card:hover .project-wrapper::before {
+            opacity: 0.3;
+        }
+        
+        .project-image-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+        
+        .project-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%) brightness(0.9);
+            transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover .project-image-wrapper img {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.05);
+        }
+        
+        .project-info {
+            position: absolute;
+            bottom: clamp(40px, 6vw, 80px);
+            left: clamp(40px, 6vw, 80px);
+            right: clamp(40px, 6vw, 80px);
+            z-index: 2;
+            text-align: left;
+            padding: clamp(30px, 5vw, 60px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: clamp(16px, 2vw, 28px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-card:hover .project-info {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px);
+        }
+        
+        .project-info h3 {
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 600;
+            margin-bottom: clamp(12px, 2vw, 20px);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: #fff;
+        }
+        
+        .project-info p {
+            font-size: clamp(14px, 2vw, 18px);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+        }
+
+        /* Benefits */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(24px, 3vw, 40px);
+            margin-top: 80px;
+        }
+        
+        .benefit-card {
+            padding: clamp(28px, 4vw, 56px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(16px, 2vw, 20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.005);
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .benefit-card h4 {
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .benefit-card p {
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.7;
+            font-size: clamp(14px, 1.8vw, 16px);
+        }
+        
+        /* Pricing */
+        .pricing {
+            position: relative;
+        }
+        
+        .pricing-bg {
+            position: absolute;
+            right: clamp(40px, 5vw, 80px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(200px, 25vw, 400px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .pricing-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(24px, 3vw, 48px);
+            margin-top: 80px;
+        }
+        
+        .pricing-card {
+            padding: clamp(32px, 5vw, 72px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(20px, 3vw, 32px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-16px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+        }
+        
+        .pricing-label {
+            font-size: 14px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+        }
+        
+        .pricing-amount {
+            font-size: clamp(48px, 8vw, 88px);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        
+        .pricing-period {
+            font-size: clamp(20px, 3vw, 32px);
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 400;
+        }
+        
+        .pricing-desc {
+            margin: 28px 0 40px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: clamp(14px, 1.8vw, 16px);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+        
+        .pricing-features li {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: clamp(14px, 1.8vw, 16px);
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .pricing-cta {
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: clamp(14px, 1.8vw, 16px);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .pricing-cta:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(24px, 3vw, 48px);
+        }
+        
+        .testimonial-card {
+            padding: clamp(28px, 4vw, 56px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(16px, 2vw, 20px);
+            display: flex;
+            gap: clamp(20px, 3vw, 32px);
+            background: rgba(255, 255, 255, 0.005);
+            transition: all 0.4s;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        .testimonial-avatar {
+            width: clamp(80px, 12vw, 100px);
+            height: clamp(80px, 12vw, 100px);
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .testimonial-content h5 {
+            font-size: clamp(18px, 2.5vw, 20px);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        
+        .testimonial-content .role {
+            font-size: clamp(12px, 1.8vw, 14px);
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-content p {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: clamp(14px, 1.8vw, 16px);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: clamp(60px, 8vw, 100px) clamp(40px, 5vw, 80px);
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .cta-section h3 {
+            font-size: clamp(32px, 5vw, 64px);
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        
+        .cta-section p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 40px;
+            font-size: clamp(16px, 2.5vw, 19px);
+        }
+        
+        /* FAQ */
+        .faq-list {
+            margin-top: 60px;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: clamp(28px, 4vw, 44px) 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.005);
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: clamp(18px, 2.8vw, 26px);
+            font-weight: 800;
+            font-style: italic;
+            cursor: pointer;
+        }
+        
+        .faq-icon {
+            font-size: clamp(24px, 3vw, 28px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s, padding 0.4s;
+            font-size: clamp(15px, 2.2vw, 17px);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 600px;
+            opacity: 1;
+            padding-top: 24px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: clamp(80px, 12vw, 180px) clamp(40px, 5vw, 80px) clamp(40px, 6vw, 80px);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .footer-cta {
+            text-align: center;
+            margin-bottom: 100px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .footer-cta h2 {
+            font-size: clamp(32px, 5vw, 72px);
+            margin-bottom: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        .footer-cta p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 40px;
+            font-size: clamp(16px, 2.5vw, 19px);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: clamp(40px, 6vw, 80px);
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .footer-logo {
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 900;
+            letter-spacing: 4px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: clamp(24px, 3vw, 48px);
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: clamp(12px, 1.8vw, 14px);
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+        }
+        
+        /* Tablet Responsive */
+        @media (max-width: 1024px) {
+            nav {
+                padding: 18px 40px;
+            }
+            
+            nav.scrolled {
+                padding: 14px 40px;
+            }
+            
+            .hero {
+                padding: 130px 40px 90px;
+            }
+            
+            .process-step {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .step-number-col {
+                flex-direction: row;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .process-step:hover {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 20px;
+            }
+            
+            nav.scrolled {
+                padding: 12px 20px;
+            }
+            
+            .nav-logo {
+                font-size: 14px;
+                letter-spacing: 3px;
+            }
+            
+            .nav-center {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .hero {
+                padding: 110px 20px 70px;
+                min-height: 90vh;
+            }
+            
+            .hero-title {
+                font-size: clamp(32px, 9vw, 56px);
+            }
+            
+            .hero-subtitle {
+                font-size: clamp(16px, 4vw, 18px);
+                margin-bottom: 36px;
+            }
+            
+            .hero-badge {
+                margin-bottom: 32px;
+                font-size: 12px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 12px;
+            }
+            
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+                padding: 18px 24px;
+                font-size: 14px;
+            }
+            
+            .hero-image {
+                margin-top: 50px;
+                width: clamp(160px, 50vw, 220px);
+                height: clamp(160px, 50vw, 220px);
+            }
+            
+            .marquee-item {
+                width: clamp(250px, 70vw, 350px);
+                height: clamp(125px, 35vw, 175px);
+            }
+            
+            .services, .what-we-do, .process, .benefits, .pricing, .testimonials, .faq, .more-work {
+                padding: clamp(60px, 10vw, 80px) 20px;
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 40px 24px;
+            }
+            
+            .section-title {
+                font-size: clamp(32px, 7vw, 56px);
+                margin-bottom: 48px;
+            }
+            
+            .services-showcase {
+                grid-template-columns: 1fr;
+                gap: 60px;
+                margin-top: 60px;
+            }
+            
+            .showcase-number {
+                font-size: clamp(80px, 22vw, 140px);
+                top: -20px;
+            }
+            
+            .projects {
+                padding: 60px 0 0;
+            }
+            
+            .project-header {
+                padding: 0 20px 40px;
+            }
+            
+            .project-card {
+                height: 65vh;
+                top: 70px;
+                padding: 0 20px;
+                margin-bottom: 32px;
+            }
+            
+            .project-wrapper {
+                width: 92%;
+            }
+            
+            .pricing-bg {
+                display: none;
+            }
+            
+            .testimonial-card {
+                flex-direction: row;
+                text-align: left;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                gap: 20px;
+            }
+        }
+        
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            nav {
+                padding: 14px 16px;
+            }
+            
+            nav.scrolled {
+                padding: 10px 16px;
+            }
+            
+            .nav-logo {
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+            
+            .nav-cta {
+                padding: 10px 18px;
+                font-size: 11px;
+            }
+            
+            .hero {
+                padding: 100px 16px 60px;
+            }
+            
+            .hero-title {
+                font-size: clamp(28px, 8vw, 44px);
+            }
+            
+            .hero-subtitle {
+                font-size: 15px;
+            }
+            
+            .hero-image {
+                width: clamp(140px, 45vw, 180px);
+                height: clamp(140px, 45vw, 180px);
+                margin-top: 40px;
+            }
+            
+            .marquee-item {
+                width: clamp(220px, 75vw, 280px);
+                height: clamp(110px, 37.5vw, 140px);
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            
+            .section-title {
+                font-size: clamp(28px, 6vw, 40px);
+            }
+            
+            .project-card {
+                height: 55vh;
+            }
+            
+            .project-wrapper {
+                width: 95%;
+            }
+            
+            .testimonial-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Extra Small Mobile */
+        @media (max-width: 375px) {
+            nav {
+                padding: 12px 12px;
+            }
+            
+            .nav-logo {
+                font-size: 11px;
+                letter-spacing: 1.5px;
+            }
+            
+            .nav-cta {
+                padding: 8px 14px;
+                font-size: 10px;
+            }
+            
+            .hero {
+                padding: 90px 12px 50px;
+            }
+            
+            .hero-title {
+                font-size: clamp(24px, 7vw, 36px);
+            }
+            
+            .hero-subtitle {
+                font-size: 14px;
+                margin-bottom: 28px;
+            }
+            
+            .btn-primary, .btn-secondary {
+                padding: 16px 20px;
+                font-size: 13px;
+            }
+            
+            .hero-image {
+                width: clamp(120px, 40vw, 160px);
+                height: clamp(120px, 40vw, 160px);
+                margin-top: 35px;
+            }
+            
+            .marquee-item {
+                width: clamp(200px, 80vw, 260px);
+                height: clamp(100px, 40vw, 130px);
+            }
+            
+            .section-title {
+                font-size: clamp(24px, 5.5vw, 36px);
+            }
+            
+            .services, .what-we-do, .process, .benefits, .pricing, .testimonials, .faq, .more-work {
+                padding: 50px 12px;
+            }
+            
+            .project-card {
+                height: 50vh;
+                padding: 0 12px;
+            }
+            
+            .project-wrapper {
+                width: 98%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursors -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-logo">BRAVO</div>
+        <ul class="nav-center">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#projects">Work</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#pricing" class="nav-cta">Get Template</a>
+        <div class="mobile-menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#projects">Work</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#pricing">Get Template</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">*2 spots available*</div>
+        <h1 class="hero-title">an Ultimate Design Partner for winning startups & Brands</h1>
+        <p class="hero-subtitle">We offer quality design services packed into a flat monthly fee</p>
+        <div class="hero-buttons">
+            <a href="#pricing" class="btn-primary">See pricing plans</a>
+            <a href="#" class="btn-secondary">Get Template</a>
+        </div>
+        <img src="https://framerusercontent.com/images/gChUfnMgsZMmi5pdKDILkSiPA.png?width=600" alt="Bravo" class="hero-image">
+    </section>
+
+     <!-- Marquee 1 -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track animate">
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/Ea3MHv6yVMiBympGrWKGhUITByw.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/J4Ox47KYv4g8Lb2C0PXNkjDaA.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/670uUrkwoRnzhCl9b3kEMwUmgE4.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/OjseN6Zg5HYRFi4BWGcEafxLw9w.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/Ea3MHv6yVMiBympGrWKGhUITByw.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/J4Ox47KYv4g8Lb2C0PXNkjDaA.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/670uUrkwoRnzhCl9b3kEMwUmgE4.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/OjseN6Zg5HYRFi4BWGcEafxLw9w.jpg?width=1120" alt="Work"></div>
+        </div>
+    </div>
+
+    <!-- Marquee 2 -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track reverse">
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/TWgBR6dpy8VfcVcGIy2oyBYzyY.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/9nNEv94U4EwW3ZkcswuOBMt2jk.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/ChQN1Htz58VqAQK60triIggQSg.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/cpbJvQoTTkomFOd8RSNsHF3b8.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/TWgBR6dpy8VfcVcGIy2oyBYzyY.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/9nNEv94U4EwW3ZkcswuOBMt2jk.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/ChQN1Htz58VqAQK60triIggQSg.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/cpbJvQoTTkomFOd8RSNsHF3b8.jpg?width=1120" alt="Work"></div>
+        </div>
+    </div>
+
+    <!-- Marquee 3 -->
+    <div class="marquee-wrapper">
+        <div class="marquee-track animate">
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/nPnTH5h7qevKhvzkR6IsMKZzk.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/wo0P2ApHuac8yCSOoIU4GYSCkOc.png?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/jauw4keQXDcwTw3RalVXIHNkra8.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/CDvON2Ey2SmkSFA0KVUbDoh8k.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/nPnTH5h7qevKhvzkR6IsMKZzk.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/wo0P2ApHuac8yCSOoIU4GYSCkOc.png?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/jauw4keQXDcwTw3RalVXIHNkra8.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/CDvON2Ey2SmkSFA0KVUbDoh8k.jpg?width=1120" alt="Work"></div>
+        </div>
+    </div>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="section-label">*Hello, we are Bravo*</div>
+        <h2 class="section-title">we help startups and enterprise to build a strong online presence in the following areas:</h2>
+        <div class="services-grid">
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/AN4qPiaSTqyPHiG9i02KmanrwY.png?width=100" alt="SaaS" class="service-icon">
+                <h3 class="service-name">saas</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/wmADdJoBlZeukkJU2ATXiZcI0.png?width=100" alt="Education" class="service-icon">
+                <h3 class="service-name">education</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/zAgKM4jRBuZZA9WvHD0KxLonVP8.png" alt="Multimedia" class="service-icon">
+                <h3 class="service-name">multimedia</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/YDT006hxO19rU9pkCPeohr4FSUY.png?width=100" alt="Web3" class="service-icon">
+                <h3 class="service-name">web3</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/T4dyd51mhqJ2jWilcmKNiJ2Qg.png?width=100" alt="Gaming" class="service-icon">
+                <h3 class="service-name">gaming</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/wbG1XnSP6qWiokHfxvge1eeXdms.png?width=100" alt="Wellness" class="service-icon">
+                <h3 class="service-name">wellness</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/umecLPqQaOHGW7AQQqOYEb86Eqs.png?width=100" alt="Fintech" class="service-icon">
+                <h3 class="service-name">fintech</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/VOzcKpQnfPPjx7TMJfTkxQMrqo.png?width=100" alt="AI" class="service-icon">
+                <h3 class="service-name">ai</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/hldJa5PKIUqxjAjiOoqdx65HDjM.png?width=100" alt="E-commerce" class="service-icon">
+                <h3 class="service-name">e-commerce</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logos -->
+    <div class="logos">
+        <div class="logo-track">
+            <img src="https://framerusercontent.com/images/ZhGioTGhvbIYvzVvrHxkcncd8.png?width=251" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/hfO1M4R8i4GdC3ASijaBSHCssxI.png?width=292" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/N6rOBMG7uFH13uKN77LohV1E808.png?width=300" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/s9gGpJyvGre7bKwaRgpYFlNNKKE.png?width=281" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/kM7mPCw6fLpy5sAzbj9KlpPbVU.png?width=263" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/YV1ODkBr3tEDMmPiDoXj9ub5p4.png?width=266" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/ZhGioTGhvbIYvzVvrHxkcncd8.png?width=251" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/hfO1M4R8i4GdC3ASijaBSHCssxI.png?width=292" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/N6rOBMG7uFH13uKN77LohV1E808.png?width=300" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/s9gGpJyvGre7bKwaRgpYFlNNKKE.png?width=281" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/kM7mPCw6fLpy5sAzbj9KlpPbVU.png?width=263" alt="Logo" class="logo-item">
+            <img src="https://framerusercontent.com/images/YV1ODkBr3tEDMmPiDoXj9ub5p4.png?width=266" alt="Logo" class="logo-item">
+        </div>
+    </div>
+
+    <!-- What We Do -->
+    <section class="what-we-do">
+        <h2 class="section-title">What we do</h2>
+        <p class="hero-subtitle">Services from A to Z helping you to grow from 0 to N</p>
+        <div class="services-showcase">
+            <div class="showcase-item">
+                <div class="showcase-number">0</div>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">fast and friendly apps</h3>
+                </div>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-number">1</div>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">Aa</h3>
+                    <p class="showcase-subtitle">catchy identity</p>
+                </div>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-number">2</div>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">responsive websites</h3>
+                </div>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-number">3</div>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">winning pitch decks</h3>
+                </div>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-number">4</div>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">social media graphics</h3>
+                </div>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-number">5</div>
+                <div class="showcase-content">
+                    <h3 class="showcase-title">engaging animations</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="process" id="process">
+        <h2 class="section-title">The smoothest design process you've ever experienced</h2>
+        <p class="hero-subtitle">No BS, no contracts. Request and get results in days.</p>
+        
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number-col">
+                    <div class="step-tag">***STRIPE***</div>
+                    <div class="step-number">***01***</div>
+                </div>
+                <div class="step-content">
+                    <h3>subscribe</h3>
+                    <p>Pick a plan and get an immediate access to your design requests</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number-col">
+                    <div class="step-tag">***TRELLO***</div>
+                    <div class="step-number">***02***</div>
+                </div>
+                <div class="step-content">
+                    <h3>Request</h3>
+                    <p>Submit a request, one or two at a time, depending on your plan</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number-col">
+                    <div class="step-tag">***FIGMA***</div>
+                    <div class="step-number">***03***</div>
+                </div>
+                <div class="step-content">
+                    <h3>receive</h3>
+                    <p>Wait for 24-48 hours until your request is finished</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number-col">
+                    <div class="step-tag">***SLACK***</div>
+                    <div class="step-number">***04***</div>
+                </div>
+                <div class="step-content">
+                    <h3>Repeat</h3>
+                    <p>Approve, discuss, or start a new request, our team is no-limit ready</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number-col">
+                    <div class="step-tag">***LOVE***</div>
+                    <div class="step-number">***05***</div>
+                </div>
+                <div class="step-content">
+                    <h3>profit</h3>
+                    <p>You get not only hands but also hearts and heads to help your business grow</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects" id="projects">
+        <div class="project-header">
+            <h2>LATEST WORK</h2>
+        </div>
+        
+        <div class="project-card">
+            <div class="project-wrapper">
+                <div class="project-image-wrapper">
+                    <img src="https://framerusercontent.com/images/ZOgoP4GVcZkc3vOPq5dGClu5Ohw.jpg" alt="Remix Supply">
+                </div>
+                <div class="project-info">
+                    <h3>Remix Supply</h3>
+                    <p>A Framer boutique with a mission to help designers and makers to showcase their skills and do is as fast as possible.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="project-wrapper">
+                <div class="project-image-wrapper">
+                    <img src="https://framerusercontent.com/images/bhkdcQ8HVgsM0A8jr7meqTSU62c.jpg" alt="Haze">
+                </div>
+                <div class="project-info">
+                    <h3>Haze</h3>
+                    <p>The goal of Haze was to deliver a fullscreen horizontal experience to showcase photography and branding projects.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="project-wrapper">
+                <div class="project-image-wrapper">
+                    <img src="https://framerusercontent.com/images/3aXWeqXIIYMcGQPJZLsEszLm4GE.jpg" alt="Nitro">
+                </div>
+                <div class="project-info">
+                    <h3>Nitro</h3>
+                    <p>Nitro is a premium Framer template for designers with an advanced layout and a ton of little big details to catch the visitor.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- More Work -->
+    <section class="more-work">
+        <h2>And even more…</h2>
+        <p>You can use this section together, or as an alternative of the full-screen case studies</p>
+        
+        <div class="marquee-track animate">
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/Ea3MHv6yVMiBympGrWKGhUITByw.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/J4Ox47KYv4g8Lb2C0PXNkjDaA.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/OjseN6Zg5HYRFi4BWGcEafxLw9w.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/Ea3MHv6yVMiBympGrWKGhUITByw.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/J4Ox47KYv4g8Lb2C0PXNkjDaA.jpg?width=1120" alt="Work"></div>
+            <div class="marquee-item"><img src="https://framerusercontent.com/images/OjseN6Zg5HYRFi4BWGcEafxLw9w.jpg?width=1120" alt="Work"></div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="benefits">
+        <h2 class="section-title">Benefits</h2>
+        <p class="hero-subtitle">You can rely on following principles while working with us:</p>
+        
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <h4>Unlimited Revisions</h4>
+                <p>We'll design until the result would match your needs</p>
+            </div>
+            <div class="benefit-card">
+                <h4>Totally Async</h4>
+                <p>No time waste with calls and syncs. Manage request when you want to</p>
+            </div>
+            <div class="benefit-card">
+                <h4>Pause or cancel anytime</h4>
+                <p>The ongoing subscription is truly under your control</p>
+            </div>
+            <div class="benefit-card">
+                <h4>Senior Quality</h4>
+                <p>Get the output from top designers with a decade of experience</p>
+            </div>
+            <div class="benefit-card">
+                <h4>Fast Turnaround</h4>
+                <p>Usually, it takes about 48 hours to complete your request</p>
+            </div>
+            <div class="benefit-card">
+                <h4>100% Authentic</h4>
+                <p>We use only stock graphics and photos, but no prebuilt kits or assets.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <img src="https://framerusercontent.com/images/B8YtQSjWLu7F1eNMOFDN4gfna0E.png?width=400" alt="Bravo" class="pricing-bg">
+        <div class="pricing-content">
+            <h2 class="section-title">Pricing</h2>
+            <p class="hero-subtitle">A simple monthly rate with no hidden fees</p>
+            
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <div class="pricing-label">*Classic*</div>
+                    <div class="pricing-amount">$4,499<span class="pricing-period">/m</span></div>
+                    <p class="pricing-desc">One request at a time. No hidden fees.</p>
+                    <ul class="pricing-features">
+                        <li>1 request at a time</li>
+                        <li>48h turnaround</li>
+                        <li>Unlimited revisions</li>
+                        <li>Senior Designer</li>
+                        <li>Secure Payments</li>
+                        <li>Pause or Cancel Anytime</li>
+                    </ul>
+                    <button class="pricing-cta">Get Started</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-label">***Professional***</div>
+                    <div class="pricing-amount">$6,499<span class="pricing-period">/m</span></div>
+                    <p class="pricing-desc">Double the game. No hidden fees.</p>
+                    <ul class="pricing-features">
+                        <li>2 requests at a time</li>
+                        <li>48h turnaround</li>
+                        <li>Unlimited revisions</li>
+                        <li>Two Senior Designers</li>
+                        <li>Secure Payments</li>
+                        <li>Pause or Cancel Anytime</li>
+                    </ul>
+                    <button class="pricing-cta">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <img src="https://framerusercontent.com/images/S4XHy3UZWkYDEtL8EAvbfYinp0.jpg?width=200" alt="Sarah" class="testimonial-avatar">
+                <div class="testimonial-content">
+                    <h5>Sarah Johnson</h5>
+                    <div class="role">StellarSolutions, CEO</div>
+                    <p>I was hesitant to try this product at first, but now I'm so glad I did. It's made such a positive impact on my everyday life</p>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <img src="https://framerusercontent.com/images/lAu1xlwOwVR3yZEFIm8JyCD284.jpg?width=200" alt="Alex" class="testimonial-avatar">
+                <div class="testimonial-content">
+                    <h5>Alex Patel</h5>
+                    <div class="role">PixelPulse, CEO</div>
+                    <p>I was so impressed with service! It exceeded my expectations and has made such a difference in my life.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h3>Questions? Book a call!</h3>
+        <p>Let's have a chat to show you what's inside the Bravo</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn-primary">Book a call</a>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <h2 class="section-title">FAQ</h2>
+        <p class="hero-subtitle">Frequently Asked Questions</p>
+        
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Why wouldn't I hire a full-time designer?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Hiring a full-time designer can be costly, especially if you don't have a continuous stream of design work. By using an unlimited design agency, you can access a team of designers for a fraction of the cost of a full-time hire. Additionally, with an agency, you benefit from a diverse range of skills and expertise.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How many requests can I have?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    The number of requests you can have depends on the agency's specific pricing model. Typically, agencies offer different tiers based on the number of simultaneous requests or the complexity of the projects. It's important to choose a plan that aligns with your anticipated workload.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What programs do you use?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    We use a variety of industry-standard design programs, such as Adobe Creative Suite (Photoshop, Illustrator, InDesign), Sketch, Figma, and others, depending on the specific needs of the project.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What if I don't like the design?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    Unlimited design agencies often offer revisions or iterations to ensure that the final design meets your expectations. If you're not satisfied with the initial design, you can provide feedback, and the designers will make the necessary adjustments until you're happy with the result.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Is there any type of design work that you do not cover?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    While we aim to cover a wide range of design services, there may be certain specialized or niche design work that we do not offer. It's best to discuss your specific needs with us to determine if we can accommodate your request or recommend alternative solutions.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-cta">
+            <div class="section-label">*Only 2 spots available*</div>
+            <h2>Let's walk you through!</h2>
+            <p>Let us demonstrate what's under the Bravo's hood. Feel free to take a comfortable slot to get a detailed agency walkthrough.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">Book a 15-minute call</a>
+                <a href="#pricing" class="btn-secondary">See Pricing</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-logo">BRAVO</div>
+            <ul class="footer-links">
+                <li><a href="#">by REMIX.SUPPLY</a></li>
+                <li><a href="#">Book a Call</a></li>
+                <li><a href="#">Follow on X</a></li>
+                <li><a href="#">Buy Template</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor - Desktop Only
+        if (window.innerWidth > 768) {
+            const cursor = document.querySelector('.cursor');
+            const follower = document.querySelector('.cursor-follower');
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+            let followerX = 0, followerY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            function animate() {
+                const diffX = mouseX - cursorX;
+                const diffY = mouseY - cursorY;
+                
+                cursorX += diffX * 0.25;
+                cursorY += diffY * 0.25;
+                followerX += (mouseX - followerX) * 0.08;
+                followerY += (mouseY - followerY) * 0.08;
+                
+                cursor.style.transform = `translate3d(${cursorX - 8}px, ${cursorY - 8}px, 0)`;
+                follower.style.transform = `translate3d(${followerX - 20}px, ${followerY - 20}px, 0)`;
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+            
+            // Cursor hover effects
+            const hoverTargets = document.querySelectorAll('a, button, .faq-item, .project-card, .benefit-card, .pricing-card');
+            hoverTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        }
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when link clicked
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+        
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 100;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -80px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('service-item')) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        // Observe service items
+        document.querySelectorAll('.service-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.08}s`;
+            observer.observe(item);
+        });
+        
+        // Observe sections
+        document.querySelectorAll('.what-we-do, .process, .benefits, .pricing, .testimonials').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(60px)';
+            section.style.transition = 'opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+            observer.observe(section);
+        });
+        
+        // Parallax effect on hero image - Desktop only
+        if (window.innerWidth > 768) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const heroImage = document.querySelector('.hero-image');
+                if (heroImage) {
+                    heroImage.style.transform = `translateY(${scrolled * 0.3}px)`;
+                }
+            });
+        }
+        
+        // Stagger animations
+        const showcaseItems = document.querySelectorAll('.showcase-item');
+        const showcaseObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        showcaseItems.forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(40px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            showcaseObserver.observe(item);
+        });
+        
+        // Process steps animation
+        const processSteps = document.querySelectorAll('.process-step');
+        const processObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateX(0)';
+                    }, index * 150);
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        processSteps.forEach(step => {
+            step.style.opacity = '0';
+            step.style.transform = 'translateX(-40px)';
+            step.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            processObserver.observe(step);
+        });
+        
+        // Benefits cards stagger
+        const benefitCards = document.querySelectorAll('.benefit-card');
+        const benefitsObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 80);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        benefitCards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(40px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            benefitsObserver.observe(card);
+        });
+        
+        // Pricing cards animation
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        const pricingObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'scale(1) translateY(0)';
+                    }, index * 200);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        pricingCards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.95) translateY(40px)';
+            card.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            pricingObserver.observe(card);
+        });
+        
+        // Magnetic effect for buttons - Desktop only
+        if (window.innerWidth > 768) {
+            const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .pricing-cta');
+            buttons.forEach(button => {
+                button.addEventListener('mousemove', (e) => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    button.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = '';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
