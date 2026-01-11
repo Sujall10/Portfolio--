@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bravo — Agency Template</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #ffffff;
+            --accent-color: #f5f5f5;
+            --border-color: #2a2a2a;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+        
+        .nav-cta {
+            padding: 12px 24px;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+        
+        .nav-cta:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 48px 80px;
+            position: relative;
+        }
+        
+        .hero-badge {
+            font-size: 12px;
+            font-style: italic;
+            margin-bottom: 32px;
+            opacity: 0.7;
+        }
+        
+        .hero-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.1;
+            max-width: 1200px;
+            margin-bottom: 24px;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            text-align: center;
+            opacity: 0.7;
+            margin-bottom: 48px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-primary, .btn-secondary {
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .hero-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin-top: 64px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Marquee Carousel */
+        .marquee-section {
+            padding: 80px 0;
+            overflow: hidden;
+        }
+        
+        .marquee {
+            display: flex;
+            gap: 32px;
+            animation: marquee 30s linear infinite;
+        }
+        
+        .marquee-row {
+            display: flex;
+            gap: 32px;
+            min-width: 100%;
+        }
+        
+        .marquee-item {
+            min-width: 400px;
+            height: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .marquee-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 120px 48px;
+        }
+        
+        .section-header {
+            font-size: 14px;
+            opacity: 0.5;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        
+        .section-title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 500;
+            margin-bottom: 80px;
+            line-height: 1.2;
+            max-width: 900px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+        }
+        
+        .service-item {
+            text-align: center;
+        }
+        
+        .service-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+        }
+        
+        .service-name {
+            font-size: 24px;
+            font-weight: 500;
+            text-transform: lowercase;
+        }
+        
+        /* Logos Section */
+        .logos {
+            padding: 80px 48px;
+            overflow: hidden;
+        }
+        
+        .logos-marquee {
+            display: flex;
+            gap: 64px;
+            animation: marquee 25s linear infinite;
+        }
+        
+        .logo-item {
+            height: 48px;
+            opacity: 0.5;
+            filter: grayscale(1);
+            transition: all 0.3s;
+        }
+        
+        .logo-item:hover {
+            opacity: 1;
+            filter: grayscale(0);
+        }
+        
+        /* Services Detail */
+        .services-detail {
+            padding: 120px 48px;
+        }
+        
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 64px;
+        }
+        
+        .service-detail {
+            position: relative;
+        }
+        
+        .service-detail h2 {
+            font-size: 72px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+        
+        .service-number {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            font-size: 120px;
+            font-weight: 800;
+            opacity: 0.05;
+        }
+        
+        /* Process Section */
+        .process {
+            padding: 120px 48px;
+        }
+        
+        .process-steps {
+            display: grid;
+            gap: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .process-step {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+        
+        .step-number {
+            font-size: 14px;
+            font-style: italic;
+            opacity: 0.5;
+        }
+        
+        .step-platform {
+            font-size: 12px;
+            font-style: italic;
+            opacity: 0.7;
+            margin-bottom: 16px;
+        }
+        
+        .step-title {
+            font-size: 48px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            text-transform: lowercase;
+        }
+        
+        .step-description {
+            font-size: 16px;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        
+        /* Projects Section */
+        .projects {
+            padding: 120px 0;
+        }
+        
+        .project-card {
+            padding: 80px 48px;
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .project-image {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+        
+        .project-info h2 {
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+        
+        .project-info p {
+            font-size: 16px;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        
+        /* Benefits */
+        .benefits {
+            padding: 120px 48px;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 48px;
+        }
+        
+        .benefit-item {
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: transform 0.3s;
+        }
+        
+        .benefit-item:hover {
+            transform: translateY(-4px);
+        }
+        
+        .benefit-item h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .benefit-item p {
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 120px 48px;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            padding: 48px;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--text-color);
+        }
+        
+        .pricing-label {
+            font-size: 14px;
+            font-style: italic;
+            opacity: 0.7;
+            margin-bottom: 16px;
+        }
+        
+        .pricing-amount {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .pricing-period {
+            font-size: 24px;
+            opacity: 0.5;
+        }
+        
+        .pricing-description {
+            margin: 24px 0;
+            opacity: 0.7;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 32px 0;
+        }
+        
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0.8;
+        }
+        
+        .pricing-cta {
+            width: 100%;
+            padding: 16px;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .pricing-cta:hover {
+            transform: scale(1.02);
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 120px 48px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 32px 0;
+            cursor: pointer;
+        }
+        
+        .faq-question {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            margin-top: 16px;
+            opacity: 0.7;
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 120px 48px 48px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .footer-cta {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .footer-cta h2 {
+            font-size: 48px;
+            margin-bottom: 24px;
+        }
+        
+        .footer-cta p {
+            opacity: 0.7;
+            margin-bottom: 32px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .footer-nav {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        
+        .footer-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-nav a:hover {
+            opacity: 1;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 24px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 100px 24px 60px;
+            }
+            
+            .services, .process, .projects, .benefits, .pricing, .faq {
+                padding: 80px 24px;
+            }
+            
+            .project-card {
+                grid-template-columns: 1fr;
+                padding: 60px 24px;
+            }
+            
+            .process-step {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">BRAVO</div>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#projects">Work</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#pricing" class="nav-cta">Get Template</a>
+        <button class="mobile-menu-btn">☰</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-badge">*2 spots available*</div>
+        <h1 class="hero-title">an Ultimate Design Partner for winning startups & Brands</h1>
+        <p class="hero-subtitle">We offer quality design services packed into a flat monthly fee</p>
+        <div class="hero-buttons">
+            <a href="#pricing" class="btn-primary">See pricing plans</a>
+            <a href="#" class="btn-secondary">Get Template</a>
+        </div>
+        <img src="https://framerusercontent.com/images/gChUfnMgsZMmi5pdKDILkSiPA.png?width=400" alt="Bravo" class="hero-image">
+    </section>
+
+    <!-- Marquee Carousel 1 -->
+    <section class="marquee-section">
+        <div class="marquee">
+            <div class="marquee-row">
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/Ea3MHv6yVMiBympGrWKGhUITByw.jpg?width=1120&height=840" alt="Work 1"></div>
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/J4Ox47KYv4g8Lb2C0PXNkjDaA.jpg?width=1120&height=840" alt="Work 2"></div>
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/670uUrkwoRnzhCl9b3kEMwUmgE4.jpg?width=1120&height=840" alt="Work 3"></div>
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/OjseN6Zg5HYRFi4BWGcEafxLw9w.jpg?width=1120&height=840" alt="Work 4"></div>
+            </div>
+            <div class="marquee-row">
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/Ea3MHv6yVMiBympGrWKGhUITByw.jpg?width=1120&height=840" alt="Work 1"></div>
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/J4Ox47KYv4g8Lb2C0PXNkjDaA.jpg?width=1120&height=840" alt="Work 2"></div>
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/670uUrkwoRnzhCl9b3kEMwUmgE4.jpg?width=1120&height=840" alt="Work 3"></div>
+                <div class="marquee-item"><img src="https://framerusercontent.com/images/OjseN6Zg5HYRFi4BWGcEafxLw9w.jpg?width=1120&height=840" alt="Work 4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">*Hello, we are Bravo*</div>
+        <h2 class="section-title">we help startups and enterprise to build a strong online presence in the following areas:</h2>
+        <div class="services-grid">
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/AN4qPiaSTqyPHiG9i02KmanrwY.png?width=72&height=72" alt="SaaS" class="service-icon">
+                <h3 class="service-name">saas</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/wmADdJoBlZeukkJU2ATXiZcI0.png?width=72&height=72" alt="Education" class="service-icon">
+                <h3 class="service-name">education</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/zAgKM4jRBuZZA9WvHD0KxLonVP8.png" alt="Multimedia" class="service-icon">
+                <h3 class="service-name">multimedia</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/YDT006hxO19rU9pkCPeohr4FSUY.png?width=72&height=72" alt="Web3" class="service-icon">
+                <h3 class="service-name">web3</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/T4dyd51mhqJ2jWilcmKNiJ2Qg.png?width=72&height=72" alt="Gaming" class="service-icon">
+                <h3 class="service-name">gaming</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/wbG1XnSP6qWiokHfxvge1eeXdms.png?width=72&height=72" alt="Wellness" class="service-icon">
+                <h3 class="service-name">wellness</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/umecLPqQaOHGW7AQQqOYEb86Eqs.png?width=72&height=72" alt="Fintech" class="service-icon">
+                <h3 class="service-name">fintech</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/VOzcKpQnfPPjx7TMJfTkxQMrqo.png?width=72&height=72" alt="AI" class="service-icon">
+                <h3 class="service-name">ai</h3>
+            </div>
+            <div class="service-item">
+                <img src="https://framerusercontent.com/images/hldJa5PKIUqxjAjiOoqdx65HDjM.png?width=72&height=72" alt="E-commerce" class="service-icon">
+                <h3 class="service-name">e-commerce</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Detail -->
+    <section class="services-detail">
+        <h2 class="section-title">What we do</h2>
+        <p class="hero-subtitle">Services from A to Z helping you to grow from 0 to N</p>
+        <div class="services-list">
+            <div class="service-detail">
+                <span class="service-number">0</span>
+                <h2>fast and friendly apps</h2>
+            </div>
+            <div class="service-detail">
+                <span class="service-number">1</span>
+                <h2>Aa</h2>
+                <p>catchy identity</p>
+            </div>
+            <div class="service-detail">
+                <span class="service-number">2</span>
+                <h2>responsive websites</h2>
+            </div>
+            <div class="service-detail">
+                <span class="service-number">3</span>
+                <h2>winning pitch decks</h2>
+            </div>
+            <div class="service-detail">
+                <span class="service-number">4</span>
+                <h2>social media graphics</h2>
+            </div>
+            <div class="service-detail">
+                <span class="service-number">5</span>
+                <h2>engaging animations</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <h2 class="section-title">The smoothest design process you've ever experienced</h2>
+        <p class="hero-subtitle">No BS, no contracts. Request and get results in days.</p>
+        
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">***01***</div>
+                <div>
+                    <div class="step-platform">***STRIPE***</div>
+                    <h3 class="step-title">subscribe</h3>
+                    <p class="step-description">Pick a plan and get an immediate access to your design requests</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number">***02***</div>
+                <div>
+                    <div class="step-platform">***TRELLO***</div>
+                    <h3 class="step-title">Request</h3>
+                    <p class="step-description">Submit a request, one or two at a time, depending on your plan</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number">***03***</div>
+                <div>
+                    <div class="step-platform">***FIGMA*** ***FRAMER***</div>
+                    <h3 class="step-title">receive</h3>
+                    <p class="step-description">Wait for 24-48 hours until your request is finished</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number">***04***</div>
+                <div>
+                    <div class="step-platform">***SLACK***</div>
+                    <h3 class="step-title">Repeat</h3>
+                    <p class="step-description">Approve, discuss, or start a new request, our team is no-limit ready</p>
+                </div>
+            </div>
+            
+            <div class="process-step">
+                <div class="step-number">***05***</div>
+                <div>
+                    <div class="step-platform">***LOVE***</div>
+                    <h3 class="step-title">profit</h3>
+                    <p class="step-description">You get not only hands but also heats and heads to help your business grow</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="project-card">
+            <div class="project-image">
+                <img src="https://framerusercontent.com/images/ZOgoP4GVcZkc3vOPq5dGClu5Ohw.jpg" alt="Remix Supply">
+            </div>
+            <div class="project-info">
+                <h2>Remix Supply</h2>
+                <p>A Framer boutique with a mission to help designers and makers to showcase their skills and do is as fast as possible. The store contains free and premium Framer templates neatly crafted for every purpose.</p>
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="project-info">
+                <h2>Haze</h2>
+                <p>The goal of Haze was to deliver a fullscreen horizontal experience to showcase photography and branding projects that look awesome on bigger formats.</p>
+            </div>
+            <div class="project-image">
+                <img src="https://framerusercontent.com/images/bhkdcQ8HVgsM0A8jr7meqTSU62c.jpg" alt="Haze">
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="project-image">
+                <img src="https://framerusercontent.com/images/3aXWeqXIIYMcGQPJZLsEszLm4GE.jpg" alt="Nitro">
+            </div>
+            <div class="project-info">
+                <h2>Nitro</h2>
+                <p>Nitro is a premium Framer template for designers with an advanced layout and a ton of little big details to catch the visitor. With more than 200 copies sold, it remains one of the most successful templates on a market.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <h2 class="section-title">Benefits</h2>
+        <p class="hero-subtitle">You can rely on following principles while working with us:</p>
+        
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <h3>Unlimited Revisions</h3>
+                <p>We'll design until the result would match your needs</p>
+            </div>
+            <div class="benefit-item">
+                <h3>Totally Async</h3>
+                <p>No time waste with calls and syncs. Manage request when you want to</p>
+            </div>
+            <div class="benefit-item">
+                <h3>Pause or cancel anytime</h3>
+                <p>The ongoing subscription is truly under your control</p>
+            </div>
+            <div class="benefit-item">
+                <h3>Senior Quality</h3>
+                <p>Get the output from top designers with a decade of experience</p>
+            </div>
+            <div class="benefit-item">
+                <h3>Fast Turnaround</h3>
+                <p>Usually, it takes about 48 hours to complete your request</p>
+            </div>
+            <div class="benefit-item">
+                <h3>100% Authentic</h3>
+                <p>We use only stock graphics and photos, but no prebuilt kits or assets.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <h2 class="section-title">Pricing</h2>
+        <p class="hero-subtitle">A simple monthly rate with no hidden fees</p>
+        
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <div class="pricing-label">*Classic*</div>
+                <div class="pricing-amount">$4,499<span class="pricing-period">/m</span></div>
+                <p class="pricing-description">One request at a time. No hidden fees.</p>
+                <ul class="pricing-features">
+                    <li>1 request at a time</li>
+                    <li>48h turnaround</li>
+                    <li>Unlimited revisions</li>
+                    <li>Senior Designer</li>
+                    <li>Secure Payments</li>
+                    <li>Pause or Cancel Anytime</li>
+                </ul>
+                <button class="pricing-cta">Get Started</button>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="pricing-label">***Professional***</div>
+                <div class="pricing-amount">$6,499<span class="pricing-period">/m</span></div>
+                <p class="pricing-description">Double the game. No hidden fees.</p>
+                <ul class="pricing-features">
+                    <li>2 requests at a time</li>
+                    <li>48h turnaround</li>
+                    <li>Unlimited revisions</li>
+                    <li>Two Senior Designers</li>
+                    <li>Secure Payments</li>
+                    <li>Pause or Cancel Anytime</li>
+                </ul>
+                <button class="pricing-cta">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <h2 class="section-title">FAQ</h2>
+        <p class="hero-subtitle">Frequently Asked Questions</p>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                Why wouldn't I hire a full-time designer?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                Hiring a full-time designer can be costly, especially if you don't have a continuous stream of design work. By using an unlimited design agency, you can access a team of designers for a fraction of the cost of a full-time hire. Additionally, with an agency, you benefit from a diverse range of skills and expertise.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                How many requests can I have?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                The number of requests you can have depends on the agency's specific pricing model. Typically, agencies offer different tiers based on the number of simultaneous requests or the complexity of the projects. It's important to choose a plan that aligns with your anticipated workload.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                What programs do you use?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                We use a variety of industry-standard design programs, such as Adobe Creative Suite (Photoshop, Illustrator, InDesign), Sketch, Figma, and others, depending on the specific needs of the project.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                What if I don't like the design?
+                <span>+</span>
+            </div>
+            <div class="faq-answer">
+                Unlimited design agencies often offer revisions or iterations to ensure that the final design meets your expectations. If you're not satisfied with the initial design, you can provide feedback, and the designers will make the necessary adjustments until you're happy with the result.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-cta">
+            <div class="section-header">*Only 2 spots available*</div>
+            <h2>Let's walk you through!</h2>
+            <p>Let us demonstrate what's under the Bravo's hood. Feel free to take a comfortable slot to get a detailed agency walkthrough.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">Book a 15-minute call</a>
+                <a href="#pricing" class="btn-secondary">See Pricing</a>
+            </div>
+        </div>
+        
+        <div class="footer-links">
+            <div class="footer-logo">BRAVO</div>
+            <ul class="footer-nav">
+                <li><a href="#">by REMIX.SUPPLY</a></li>
+                <li><a href="#">Book a Call</a></li>
+                <li><a href="#">Follow on X</a></li>
+                <li><a href="#">Buy Template</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                item.classList.toggle('active');
+                const icon = item.querySelector('.faq-question span');
+                icon.textContent = item.classList.contains('active') ? '−' : '+';
+            });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar Background on Scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(10, 10, 10, 0.95)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 10, 0.8)';
+            }
+        });
+    </script>
+</body>
+</html>
